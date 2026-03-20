@@ -1,5 +1,4 @@
 Las declaraciones **Tipadas** restringen los posibles valores de una variable en la ejecución del programa.
-
 ### Ubicacion y Valores de Variables
 Al declarar una variable la estamos ligando a una **ubicacion en memoria** (global, en la pila o en el *heap*).
 La variable tiene 3 partes:
