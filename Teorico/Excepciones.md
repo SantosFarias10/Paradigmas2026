@@ -2,8 +2,7 @@ Terminan una parte de la computación, nos permite saltar fuera de una construcc
 Esta compuesta de **Dos Construcciones** lingüísticas
 * Un **Manejador** de excepciones (*exeption handler*), que captura (*catch*) la excepción y la trata.
 * Y la **Sentencia** o **Expresión** que **Levanta** (*raise*) o tira (*throw*) la excepción.
-
 #### Diferencias con go to
 Solo se puede salir de una función, no saltar a cualquier parte del programa.
 Se pueden pasar Datos como parte del salto para recuperarse de la excepción o como información para el usuario, pero estos datos tienen alcance dinámico. Se obtienen del entorno en el que se ejecuta la función, no del entorno en le que se definió.
-
+### Los manejadores tienen alcance Dinamico
