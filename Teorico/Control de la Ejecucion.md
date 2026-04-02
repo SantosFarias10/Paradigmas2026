@@ -123,7 +123,6 @@ f(3);
 La llamada a `f(3)` lleva a una llamada a `g(12)` dentro de la función `f`. Esto provoca que se evalué la expresión `x + z` en el cuerpo de `g`. Después de la llamada a `g`, la pila de ejecución tendrá *activation record* para la declaración externa de `x`, la invocación de `f`, y la invocación de `g`, como se muestra en la siguiente ilustración.
 ![](EjemploAlcance.png)
 En este punto se almacenan en la pila dos identificadores de variable con el nombre de `x`, uno en el bloque exterior y uno dentro de `f`. Con **Alcance Dinámico**, el identificador de `x` en la expresión `x + z` sera interpretado como la del *activation record* creado mas recientemente, o sea, `x = 4`. Con **Alcance Estático**, el identificador de `x` en `x + z` se referirá a la declaración de `x` del bloque del texto de programa mas cercano que la contiene, mirando hacia arriba desde el lugar que aparece `x + z` en el texto del programa. Con alcance estático, la declaración correspondiente de `x` es la del bloque exterior, o sea, `x = 1`.
-
 ### Naturalidad y Overhead del Alcance Estático
 El alcance estático es la semántica mas intuitiva, por esta razón los lenguajes de programación proveen mecanismos necesarios para poder mantener esta semántica. Hay diferentes opciones para hacerlo.
 La opción mas sencilla es prohibir los contexto en los que el alcance estático daría un  resultado distinto al alcance dinámico.
