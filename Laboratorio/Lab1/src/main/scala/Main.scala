@@ -1,10 +1,12 @@
 object Main {
   def main(args: Array[String]): Unit = {
+
+    val path = "subscriptions.json" // path relativo al directorio donde se compila
     val header = s"Reddit Post Parser\n${"=" * 40}"
 
-    val subscriptions: List[String] = FileIO.readSubscriptions()
+    val subscriptions: List[(String, String)] = FileIO.readSubscriptions(path)
 
-    val allPosts: List[(String, String)] = subscriptions.map { url =>
+    val allPosts: List[(String, String)] = subscriptions.map { case (name, url) =>
       println(s"Fetching posts from: $url")
       val posts = FileIO.downloadFeed(url)
       (url, posts)
