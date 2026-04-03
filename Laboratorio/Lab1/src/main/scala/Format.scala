@@ -24,6 +24,13 @@ object Format {
       val publication_date = TextProcessing.formatDateFromUTC(created_utc)
     
       (subreddit, title, selftext, publication_date)
+    }.filter { case (_, title, selftext, _) =>
+      // Ejercicio 3
+      // hay que eliminar los post que no tengan texto, o sea que tengan el selftext sea vacio
+      // los posts que solo tengan espacios y por ultimo los que no tengan titulo.
+      title.trim.nonEmpty && selftext.trim.nonEmpty
+      // El metodo de trim quita todos los caracteres de espacio en blanco al inicio y al final
+      // Luego de quitar el primer y ultimo caracter, vemos si queda algun caracter en el titulo y en el contenido 
     }
     formattedPosts
   }
