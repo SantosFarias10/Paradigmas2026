@@ -1,9 +1,4 @@
-/*
-  SubrreditName = String; 
-  Url = String; 
-  ...
-*/
-import RedditTypes._ 
+import RedditTypes._ // Subreddit = String; Url = String; etc
 
 object Main {
   def main(args: Array[String]): Unit = {
@@ -17,7 +12,7 @@ object Main {
     // List[List[Subscription]] o List[] si previamente era None.
     // Luego ".flatten" agarra la lista de listas y las une en una sola,
     // por lo que vamos a terminar teniendo List[Subscription] o List[] si era None.
-    val subreddits: List[(SubredditName, Url)] = FileIO.readSubscriptions(path).toList.flatten
+    val subreddits: List[(Subreddit, Url)] = FileIO.readSubscriptions(path).toList.flatten
     //println(s"\nLista obtenida de tuplas de la forma (subredditName, url): $subreddits\n")
 
     // Por si quieren cortar la ejecución acá para ver este print, pueden descomentar esto
@@ -37,7 +32,7 @@ object Main {
     // Si prefieren verlo, entren a cualquiera de los links subscriptions.json, que es más entendible.
 
     // Ejercicio 2: Formatear posts (Quedarse solo con las partes "importantes")
-    val formattedPosts: List[(SubredditName, postTitle, postText, postedDate)]
+    val formattedPosts: List[(Subreddit, postTitle, postText, postedDate)]
       = allPosts.flatMap { case (url, posts) =>
         // Usamos flatmap porque nos quedan List[List[(String...)]
         // flatMap combina map con flatten; flatten convierte una coleccion de colecciones
@@ -46,21 +41,20 @@ object Main {
         Format.subredditPosts(url, posts).toList.flatten
       }
 
-    //val frecuencyRes: List[(String, List[(String, Int)])]= // List[(subreddit, List[(words, count)])]
-    //Format.wordFrecuency(formattedPosts)
+    val frecuencyRes: List[(Subreddit, List[(String, Int)])]= // List[(subreddit, List[(words, count)])]
+      Format.wordFrecuency(formattedPosts)
 
     // para poder ver el output mas facil
-    /* val output = frecuencyRes
+    val output = frecuencyRes
       .map { case (subreddit, wordcount) => // wordcount = (word, count)
         val sreddit = s"subredditName:$subreddit"
-        val words = wordcount.map { case (word, count) => 
+        val words = wordcount.map { case (word, count) =>
           s"$word - $count"
         }.mkString("\n")
-        s"$sreddit\n$words" 
+        s"$sreddit\n$words"
       }.mkString("\n\n")
 
     println(output)
-    */
 
     // para poder leer mejor el output
     // val output = formattedPosts

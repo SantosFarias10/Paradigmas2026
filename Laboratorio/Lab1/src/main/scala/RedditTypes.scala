@@ -1,12 +1,12 @@
 object RedditTypes {
   type Url = String
-  type SubredditName = String
+  type Subreddit = String
   type SubredditContent = String
-  type Subscription = (SubredditName, Url)
+  type Subscription = (Subreddit, Url)
 
   type postTitle = String
   type postText = String
   type postedDate = String
 
-  type Post = (SubredditName, postTitle, postText, postedDate)
+  type Post = (Subreddit, postTitle, postText, postedDate)
 }
