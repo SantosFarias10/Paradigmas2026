@@ -1,7 +1,7 @@
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
 import scala.io.Source
-import scala.util.Try
+import scala.util.{Try, Using}
 
 
 object Main {
@@ -9,26 +9,33 @@ object Main {
   // Agregamos los campos de count y before
   type Subscription = (String, String, Int, String) // (name, url, count, before)
 
-    // Pure function to read subscriptions from a JSON file
+  // Pure function to read subscriptions from a JSON file
   def readSubscriptions(path: String): Option[List[Subscription]] = {
-    Try {
-      val source = Source.fromFile(path)
+    // Utilizamos 'Using' para garantizar que el archivo se cierre de forma segura
+    // Incluso si ocurre una excepcion, evitando "resource leaks"
+    Using(Source.fromFile(path)) { source =>
       val jsonString = source.mkString
       implicit val formats: Formats = DefaultFormats
 
       val json = parse(jsonString)
-      val subscriptions = json.children.map { child =>
-        val name = (child \ "name").extract[String]
-        val before = (child \ "before").extractOpt[String].getOrElse("")
-        val count = (child \ "count").extractOpt[Int].getOrElse(0)
-        val url = (child \ "url").extract[String]
-        (name, url, count, before)
+      
+      // El metodo flatMap nos permite descartar automáticamente aquellas suscripciones
+      // Que devuelvan None
+      val subscriptions = json.children.flatMap { child =>
+        // Try{...}.toOption maneja de forma "pura" el error si una suscripción no puede
+        // Ser parseada por tener campos faltantes (o sea Lear Python)
+        Try {
+          val name = (child \ "name").extract[String]
+          val before = (child \ "before").extract[String]
+          val count = (child \ "count").extract[Int]
+          // Construimos la URL asociada a cada Subreddit con la expresión pedida
+          val url = (child \ "url").extract[String].concat(s"?count=$count&before=$before")
+          (name, url, count, before)
+        }.toOption
       }
-
-      source.close()
-
+      // Retornamos subscriptions
       subscriptions
-    }.toOption
+    }.toOption // Si ocurre un error mayor (ej: archivo no existe o JSON inválido), devuelve None de forma pura
   }
 
   def readPosts(url: String): List[String] = {
