@@ -1,0 +1,9 @@
+[0m[[0m[31merror[0m] [0m[0m/home/mona/Documentos/Paradigmas2026/Laboratorio/Lab2/src/main/scala/NamedEntity.scala:62:7: `override` modifier required to override concrete member:[0m
+[0m[[0m[31merror[0m] [0m[0mdef entityType: String (defined in class Organization)[0m
+[0m[[0m[31merror[0m] [0m[0m  def entityType: String = "University"[0m
+[0m[[0m[31merror[0m] [0m[0m      ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/mona/Documentos/Paradigmas2026/Laboratorio/Lab2/src/main/scala/NamedEntity.scala:74:7: `override` modifier required to override concrete member:[0m
+[0m[[0m[31merror[0m] [0m[0mdef entityType: String (defined in class Technology)[0m
+[0m[[0m[31merror[0m] [0m[0m  def entityType: String = "ProgrammingLanguage"[0m
+[0m[[0m[31merror[0m] [0m[0m      ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

@@ -15,11 +15,6 @@ object Analyzer {
    * @param dictionary lista de entidades conocidas (cargadas desde los diccionarios)
    * @return lista de entidades cuyo texto aparece en el texto analizado
    *
-   * TODO (Ejercicio 3): Implementar este método.
-   *
-   *   Para cada entidad en el diccionario, verificar si su texto aparece en el
-   *   texto del post. Retornar únicamente las entidades que aparecen.
-   *
    *   Ejemplo:
    *     text       = "Scala fue creado en EPFL por Martin Odersky"
    *     dictionary = List(
@@ -35,7 +30,11 @@ object Analyzer {
    *                  )
    */
   def detectEntities(text: String, dictionary: List[NamedEntity]): List[NamedEntity] = {
-    ???
+    // Each entry in the dictionary is a NamedEntity (can be Person, University, etc.)
+    // Filter dictionary to only include entities that appear in text
+    val listFiltered: List[NamedEntity] = dictionary.filter(entity => text.contains(entity.text))
+
+    return listFiltered
   }
 
   /**

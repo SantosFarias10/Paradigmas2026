@@ -15,8 +15,6 @@ abstract class NamedEntity(val text: String) {
   /**
    * Retorna el tipo de la entidad como String.
    * Ejemplo: "Person", "University", "ProgrammingLanguage"
-   *
-   * TODO (Ejercicio 1): Implementar en cada subclase concreta.
    */
   def entityType: String
 
@@ -30,10 +28,6 @@ abstract class NamedEntity(val text: String) {
 }
 
 // =====================================================================
-// TODO (Ejercicio 1): Completar la jerarquía de entidades
-//
-// Implementar las clases faltantes.
-//
 // Jerarquía esperada:
 //
 //   NamedEntity
@@ -55,6 +49,7 @@ abstract class NamedEntity(val text: String) {
 //   entities.foreach(e => println(e.describe))
 // =====================================================================
 
+
 class Person(text: String) extends NamedEntity(text) {
   def entityType: String = "Person"
 }
@@ -64,7 +59,7 @@ class Organization(text: String) extends NamedEntity(text) {
 }
 
 class University(text: String) extends Organization(text) {
-  def entityType: String = "University"
+  override def entityType: String = "University"
 }
 
 class Place(text: String) extends NamedEntity(text) {
@@ -76,5 +71,5 @@ class Technology(text: String) extends NamedEntity(text) {
 }
 
 class ProgrammingLanguage(text: String) extends Technology(text) {
-  def entityType: String = "ProgrammingLanguage"
+  override def entityType: String = "ProgrammingLanguage"
 }

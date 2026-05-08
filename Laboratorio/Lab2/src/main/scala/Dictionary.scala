@@ -27,18 +27,28 @@ object Dictionary {
    * @param entityType tipo de entidad: "Person", "University", "ProgrammingLanguage", etc.
    * @return lista de NamedEntity del tipo correspondiente
    *
-   * TODO (Ejercicio 2): Implementar este método.
-   *
-   *   Pasos sugeridos:
-   *     1. Leer las líneas del archivo
-   *     2. Para cada línea, crear la instancia de la clase correcta
-   *     3. Retornar la lista de entidades creadas
-   *
-   *   Para crear la clase correcta según el tipo se puede usar match:
-   *
    */
   def loadFromFile(filePath: String, entityType: String): List[NamedEntity] = {
-    ???
+    // Read lines from file, used function from FileIO
+    val lines = FileIO.readLines(filePath)
+    // Remove whitespace
+    lines.map(_.trim)
+    // Remove empty lines
+    lines.filter(_.nonEmpty)
+
+    // create list of NamedEntity, based on entityType
+    val list: List[NamedEntity] = lines.map { name =>
+      entityType match {
+        case "Person"               => new Person(name)
+        case "Organization"         => new Organization(name)
+        case "University"           => new University(name)
+        case "Place"                => new Place(name)
+        case "Technology"           => new Technology(name)
+        case "ProgrammingLanguage"  => new ProgrammingLanguage(name)
+      }
+    }
+
+    return list
   }
 
   /**
@@ -46,10 +56,26 @@ object Dictionary {
    *
    * @return lista con todas las entidades de todos los diccionarios
    *
-   * TODO (Ejercicio 2): Implementar este método.
-   *
    */
   def loadAll(): List[NamedEntity] = {
-    ???
+    // Load all dictionaries
+    val people        = loadFromFile("data/people.txt", "Person")
+    val organizations = loadFromFile("data/organizations.txt", "Organization")
+    val universities  = loadFromFile("data/universities.txt", "University")
+    val places        = loadFromFile("data/places.txt", "Place")
+    val languages     = loadFromFile("data/languages.txt", "ProgrammingLanguage")
+
+    // Combine all dictionaries
+    val all: List[NamedEntity] =
+      people ++ organizations ++ universities ++ places ++ languages
+
+    return all
+  }
+
+  // Test
+  def main(args: Array[String]): Unit = {
+    val dict = Dictionary.loadAll()
+    println(s"Total de entidades: ${dict.size}")
+    dict.filter(_.entityType == "Person").foreach(p => println(p.describe))
   }
 }
