@@ -24,9 +24,14 @@ object Format {
       val selftext         = (data \ "selftext").extract[String]
       val created_utc      = (data \ "created_utc").extract[Double].toLong
       val publication_date = TextProcessing.formatDateFromUTC(created_utc)
+      // Ejercicio 6
+      // Usamos el metodo de getOrElse ya que extractOpt nos devuelve un Option[Int] (un Some(score)).
+      // Para el caso de None se devolvera 0.
+      val score            = (data \ "score").extractOpt[Int].getOrElse(0)
+      val postUrl          = (data \ "url").extractOpt[String].getOrElse("")
     
-      (subreddit, title, selftext, publication_date)
-      }.filter { case (_, title, selftext, _) =>
+      (subreddit, title, selftext, publication_date, score, postUrl)
+      }.filter { case (_, title, selftext, _, _, _) =>
         // Ejercicio 3
         // hay que eliminar los post que no tengan texto, o sea que tengan el selftext sea vacio
         // los posts que solo tengan espacios y por ultimo los que no tengan titulo.
@@ -59,12 +64,12 @@ object Format {
       // Recorremos la lista y agrupamos los posts que comparten la misma clave. Aca la clave es solo el nombre
       // Del subreddit, el resultado es un Map[String, List[Post], a cada subreddit le corresponde la lista de
       // Todos sus posts.
-      .groupBy { case (subreddit, _, _, _) => subreddit}
+      .groupBy { case (subreddit, _, _, _, _, _) => subreddit}
       // Aca se itere ese Map. En scala, al hacer .map sobre un Map, cada elemento es un par (clave, valor),
       // O sea (Subreddit, postList), postList es la List[Post] de ese subreddit (lo que grupBy junto).
       .map { case (subreddit, postList) =>
         // por cada post tomamos solo el title y selftext.
-        val words = postList.flatMap { case (_, title, selftext, _) => 
+        val words = postList.flatMap { case (_, title, selftext, _, _, _) => 
           // Los unimos en un solo String. 
           // El metodo split parte el texto en "palabras" usando cualquier
           // Secuencia de numeros como separador (\\W+ = no "word character"). 

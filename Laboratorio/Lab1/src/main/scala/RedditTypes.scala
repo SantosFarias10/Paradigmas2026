@@ -7,6 +7,8 @@ object RedditTypes {
   type postTitle = String
   type postText = String
   type postedDate = String
+  type score = Int
+  type postUrl = String
 
-  type Post = (Subreddit, postTitle, postText, postedDate)
+  type Post = (Subreddit, postTitle, postText, postedDate, score, postUrl)
 }

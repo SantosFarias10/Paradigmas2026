@@ -1,4 +1,4 @@
-import RedditTypes._ // Subreddit = String; Url = String; etc
+import RedditTypes._ // SubrreditName = String; Url = String; etc
 
 object Main {
   def main(args: Array[String]): Unit = {
@@ -12,7 +12,7 @@ object Main {
     // List[List[Subscription]] o List[] si previamente era None.
     // Luego ".flatten" agarra la lista de listas y las une en una sola,
     // por lo que vamos a terminar teniendo List[Subscription] o List[] si era None.
-    val subreddits: List[(Subreddit, Url)] = FileIO.readSubscriptions(path).toList.flatten
+    val subreddits: List[(SubredditName, Url)] = FileIO.readSubscriptions(path).toList.flatten
     //println(s"\nLista obtenida de tuplas de la forma (subredditName, url): $subreddits\n")
 
     // Por si quieren cortar la ejecución acá para ver este print, pueden descomentar esto
@@ -32,7 +32,7 @@ object Main {
     // Si prefieren verlo, entren a cualquiera de los links subscriptions.json, que es más entendible.
 
     // Ejercicio 2: Formatear posts (Quedarse solo con las partes "importantes")
-    val formattedPosts: List[(Subreddit, postTitle, postText, postedDate)]
+    val formattedPosts: List[(SubredditName, postTitle, postText, postedDate, score, postUrl)]
       = allPosts.flatMap { case (url, posts) =>
         // Usamos flatmap porque nos quedan List[List[(String...)]
         // flatMap combina map con flatten; flatten convierte una coleccion de colecciones
@@ -41,18 +41,49 @@ object Main {
         Format.subredditPosts(url, posts).toList.flatten
       }
 
-    val frecuencyRes: List[(Subreddit, List[(String, Int)])]= // List[(subreddit, List[(words, count)])]
+    val frecuencyRes: List[(String, List[(String, Int)])]= // List[(subreddit, List[(words, count)])]
       Format.wordFrecuency(formattedPosts)
 
-    // para poder ver el output mas facil
-    val output = frecuencyRes
-      .map { case (subreddit, wordcount) => // wordcount = (word, count)
-        val sreddit = s"subredditName:$subreddit"
-        val words = wordcount.map { case (word, count) =>
-          s"$word - $count"
+    // Se indexan frecuencias por subreddit para combinarlas en el informe final.
+    val frequencyBySubreddit: Map[SubredditName, List[(String, Int)]] = frecuencyRes.toMap
+
+    // Se agrupan posts por subreddit para acumular score e imprimir los primeros 5.
+    val postsBySubreddit: Map[SubredditName, List[(SubredditName, postTitle, postText, postedDate, score, postUrl)]] =
+      formattedPosts.groupBy { case (subreddit, _, _, _, _, _) => subreddit }
+
+   
+    val output = subreddits.map { case (subredditName, _) =>
+      val subredditPosts = postsBySubreddit.getOrElse(subredditName, List.empty)
+      val words = frequencyBySubreddit.getOrElse(subredditName, List.empty)
+
+      // Con foldLeft hacemos un acumulador inmutable de score total.
+      val totalScore = subredditPosts.foldLeft(0) { case (acc, (_, _, _, _, score, _)) =>
+        acc + score
+      }
+
+      val wordsSection = if (words.isEmpty) {
+        "- Sin palabras frecuentes"
+      } else {
+        words.map { case (word, count) => s"- $word: $count" }.mkString("\n")
+      }
+
+      val topPostsSection = if (subredditPosts.isEmpty) {
+        "- Sin posts disponibles"
+      } else {
+        subredditPosts.take(5).map { case (_, title, _, date, _, postUrl) =>
+          s"- $title | $date | $postUrl"
         }.mkString("\n")
-        s"$sreddit\n$words"
-      }.mkString("\n\n")
+      }
+
+      s"""## $subredditName
+Score total: $totalScore
+
+Palabras frecuentes:
+$wordsSection
+
+Primeros 5 posts (titulo | fecha | URL):
+$topPostsSection"""
+    }.mkString("\n\n")
 
     println(output)
 
