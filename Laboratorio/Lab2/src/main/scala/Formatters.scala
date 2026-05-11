@@ -44,7 +44,7 @@ object Formatters {
    * @param counts mapa de entityType → cantidad
    * @return texto con las estadísticas ordenadas por cantidad (de mayor a menor)
    *
-   * TODO (Ejercicio 5): Implementar este método.
+   * (Ejercicio 5): Implementar este método.
    *
    *   Ejemplo de salida esperada:
    *
