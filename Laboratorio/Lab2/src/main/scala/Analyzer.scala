@@ -43,7 +43,7 @@ object Analyzer {
    * @param entities lista de entidades detectadas
    * @return mapa de entityType → cantidad de apariciones
    *
-   * TODO (Ejercicio 5): Implementar este método.
+   * (Ejercicio 5): Implementar este método.
    *
    *   Ejemplo:
    *     entities = List(
@@ -59,6 +59,34 @@ object Analyzer {
    *                 )
    */
   def countByType(entities: List[NamedEntity]): Map[String, Int] = {
-    ???
+    val result: Map[String, Int] = entities
+      // recorre la lista original de entidades (entities), para cada entidad evalua la funcion
+      // que le pasamos entity => entity.entityType. La clave es el tipo de entidad (String)
+      // y el valor es una lista con todas las entidades que pertenecen a ese "tipo"
+      // groupBy return a Map[String, List[NamedEntity]]
+      .groupBy(entity => entity.entityType)
+      // recorremos cada par (clave, valor) del Map. Usando pattern marching extraemos el nombre
+      // del tipo y la lista de entidades. Luego le decimos que por cada par original, genere
+      // un nuevo par: La clave sigue siendo el entityType (String), y el valor ahora es el tamaño
+      // de la lista entityList (Int) 
+      .map {
+        case (entityType, entityList) => (entityType, entityList.size)
+      }
+    
+    return result
+  }
+
+  // Test
+  def main(args: Array[String]): Unit = {
+    val entities = List(
+      new Person("Alan Turing"),
+      new ProgrammingLanguage("Scala"),
+      new Person("Ada Lovelace"),
+      new University("MIT")
+    )
+
+    val counts = countByType(entities)
+    println(counts)
+    // Map(ProgrammingLanguage -> 1, Person -> 2, University -> 1)
   }
 }

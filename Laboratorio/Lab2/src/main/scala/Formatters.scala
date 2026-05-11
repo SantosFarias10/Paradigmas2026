@@ -55,6 +55,27 @@ object Formatters {
    *     University: 2
    */
   def formatEntityStats(counts: Map[String, Int]): String = {
-    ???
+    val stats = "=== Estadísticas de entidades ===\n" + counts.map(c => c._1 + ": " + c._2)
+    return stats
+  }
+
+  def main(args: Array[String]): Unit = {
+    val entities = List(
+      new Person("Alan Turing"),
+      new University("MIT"),
+      new ProgrammingLanguage("Scala"),
+      new Place("San Francisco")
+    )
+    println(formatNERResult("Scala 3 released at EPFL by Martin Odersky", entities))
+    
+    val counts = Map(
+      "Person" -> 5,
+      "ProgrammingLanguage" -> 3,
+      "Organization" -> 2,
+      "University" -> 2
+    )
+    println(formatEntityStats(counts))
+    // === Estadísticas de entidades ===
+    //List(Person: 5, ProgrammingLanguage: 3, Organization: 2, University: 2)
   }
 }
