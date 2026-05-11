@@ -14,7 +14,7 @@ object Formatters {
    * @param entities  entidades detectadas en ese post
    * @return bloque de texto con el título y las entidades encontradas
    *
-   * TODO (Ejercicio 4): Implementar este método.
+   * (Ejercicio 4): Implementar este método.
    *
    *   Usar el método describe de cada entidad para generar la salida.
    *   No es necesario hacer match sobre el tipo concreto de cada entidad:
@@ -31,7 +31,11 @@ object Formatters {
    *   Si no se detectaron entidades, mostrar un mensaje indicándolo.
    */
   def formatNERResult(postTitle: String, entities: List[NamedEntity]): String = {
-    ???
+    if (entities.isEmpty) {
+      return "Post: " + postTitle + "\n" + "No se detectaron entidades." + "\n"
+    } else {
+      return "Post: " + postTitle + "\n" + entities.map(entity => entity.describe) + "\n"
+    }
   }
 
   /**
