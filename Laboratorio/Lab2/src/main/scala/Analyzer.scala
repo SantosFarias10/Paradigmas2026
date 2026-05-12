@@ -1,3 +1,8 @@
+// importa la clase Regex que representa a una "Expresión Regular"
+import scala.util.matching.Regex
+// 
+import java.util.regex.Pattern
+
 // =====================================================================
 // Ejercicios 3 y 5: Detección y conteo de entidades
 // =====================================================================
@@ -32,9 +37,29 @@ object Analyzer {
   def detectEntities(text: String, dictionary: List[NamedEntity]): List[NamedEntity] = {
     // Each entry in the dictionary is a NamedEntity (can be Person, University, etc.)
     // Filter dictionary to only include entities that appear in text
-    val listFiltered: List[NamedEntity] = dictionary.filter(entity => text.contains(entity.text))
+    // `val listFiltered: List[NamedEntity] = dictionary.filter(entity => text.contains(entity.text))`
+    // Esta implementación esta mal, ya que al tener por ejemplo "Alan Turing programa 
+    // en Javascript", si tenemos en el diccionario "Java" toma a "Javascript" como una entity.
 
-    return listFiltered
+    // Para solucionar el problema de contains, usamos "Regular Expression"
+    val dictionaryFiltered: List[NamedEntity] = dictionary.filter { entity =>
+      // Pattern.quote() = Si tenemos "C++", este metodo lo transforma en un string "Seguro", para que la regex lo interprete como string y no un operador.
+      val textRegex = Pattern.quote(entity.text)
+
+      /*
+      Creamos una regex (expresión regular) que coincida con la palabra como una "palabra completa". Esto lo hacemos por si tenemos +, -, \, /, etc.
+        * \b (Word Boundary / Limite de palabras) = Indica donde empieza la palabra (el principio) y donde finaliza la palabra (al final) a comparar, aca garantizamos que el programa no matchee la palabra Java si aparece "\bJavascript\b"
+        * .r = Metodo de scala que convierte ese string interpolado que acabamos de construir en un objeto de tipo Regex.
+        * findFirstIn() = Este metodo que busca la primera vez que la expresion regular aparecen dentro de text, retorna un Option[String], si lo encuentra entonces devuelve Some(match) donde match es el string que se encontro y si no lo encuentra devuelve None
+        * isDefined() = Este metodo es de la clase Option, retorna un booleano, true si encuentra algo y false si no.
+      */
+      val regex: Regex = s"\\b${textRegex}\\b".r
+      //Busca la primera ocurrencia en el texto
+      val entityFound: Boolean = regex.findFirstIn(text).isDefined
+      entityFound
+    }
+
+    return dictionaryFiltered
   }
 
   /**
@@ -78,15 +103,21 @@ object Analyzer {
 
   // Test
   def main(args: Array[String]): Unit = {
-    val entities = List(
+
+    // Diccionario de entidades conocidas
+    val dictionary: List[NamedEntity] = Dictionary.loadAll()
+
+    val dictionary2: List[NamedEntity] = List(
       new Person("Alan Turing"),
-      new ProgrammingLanguage("Scala"),
-      new Person("Ada Lovelace"),
-      new University("MIT")
+      new ProgrammingLanguage("Java"),
+      new Place("San Francisco"),
+      new University("EPFL")
     )
 
-    val counts = countByType(entities)
-    println(counts)
-    // Map(ProgrammingLanguage -> 1, Person -> 2, University -> 1)
+    val text: String = "alan turing Programa en Javascript, en San Francisco, y EPFF,"
+    val result: List[NamedEntity] = detectEntities(text, dictionary2)
+    
+    println(result)
+    // Esto imprime 
   }
 }
