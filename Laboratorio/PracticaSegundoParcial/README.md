@@ -41,7 +41,7 @@ abstract class NamedEntity(val text: String) {
   // concreto, ya esta implementado para todas las subclases
   def describe: String = s"[$entityType] $text"
 }
-```D
+```
 
 * `text`: el nombre de la entidad (como por ejemplo: `Alan turing`, `Scala`, etc).
 * `entityType`: Es un atributo abstracto, cada subclase devuelve su tipo como String.
