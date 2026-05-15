@@ -44,7 +44,7 @@ object Analyzer {
     // Para solucionar el problema de contains, usamos "Regular Expression"
     val dictionaryFiltered: List[NamedEntity] = dictionary.filter { entity =>
       // Pattern.quote() = Si tenemos "C++", este metodo lo transforma en un string "Seguro", para que la regex lo interprete como string y no un operador.
-      val textRegex = Pattern.quote(entity.text)
+      val textRegex: String = Pattern.quote(entity.text)
 
       /*
       Creamos una regex (expresión regular) que coincida con la palabra como una "palabra completa". Esto lo hacemos por si tenemos +, -, \, /, etc.
