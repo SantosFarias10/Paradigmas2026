@@ -1,0 +1,18 @@
+[0m[[0m[31merror[0m] [0m[0m/home/mona/Documentos/Paradigmas2026/Laboratorio/Lab3/Esqueleton/src/main/scala/Main.scala:79:37: not found: value JSONParser[0m
+[0m[[0m[31merror[0m] [0m[0m          val allPost: List[Post] = JSONParser.parsePosts(json, sub.name)[0m
+[0m[[0m[31merror[0m] [0m[0m                                    ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/mona/Documentos/Paradigmas2026/Laboratorio/Lab3/Esqueleton/src/main/scala/Main.scala:80:68: not found: value allPosts[0m
+[0m[[0m[31merror[0m] [0m[0m          val postNotEmpty: List[Post] = Analyzer.filterEmptyPosts(allPosts)[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/mona/Documentos/Paradigmas2026/Laboratorio/Lab3/Esqueleton/src/main/scala/Main.scala:137:46: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : scala.collection.immutable.Map[String,Any][0m
+[0m[[0m[31merror[0m] [0m[0m required: Map[String,Int][0m
+[0m[[0m[31merror[0m] [0m[0m    println(Formatters.formatProcessingStats(stats))[0m
+[0m[[0m[31merror[0m] [0m[0m                                             ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/mona/Documentos/Paradigmas2026/Laboratorio/Lab3/Esqueleton/src/main/scala/Main.scala:141:9: not found: value filteredPosts[0m
+[0m[[0m[31merror[0m] [0m[0m    if (filteredPosts.isEmpty) {[0m
+[0m[[0m[31merror[0m] [0m[0m        ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/mona/Documentos/Paradigmas2026/Laboratorio/Lab3/Esqueleton/src/main/scala/Main.scala:150:23: not found: value filteredPosts[0m
+[0m[[0m[31merror[0m] [0m[0m    val allEntities = filteredPosts.flatMap { post =>[0m
+[0m[[0m[31merror[0m] [0m[0m                      ^[0m
+[0m[[0m[31merror[0m] [0m[0m5 errors found[0m
