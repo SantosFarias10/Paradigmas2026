@@ -22,6 +22,8 @@ object Dictionary {
         case "Place"               => new Place(name)
         case "Technology"          => new Technology(name)
         case "ProgrammingLanguage" => new ProgrammingLanguage(name)
+        // Ej 2.b
+        case "Conference"          => new Conference(name)
       }
     }
   }
@@ -36,6 +38,8 @@ object Dictionary {
     loadFromFile("data/universities.txt",  "University")          :::
     loadFromFile("data/languages.txt",     "ProgrammingLanguage") :::
     loadFromFile("data/organizations.txt", "Organization")        :::
-    loadFromFile("data/places.txt",        "Place")
+    loadFromFile("data/places.txt",        "Place")               :::
+    // Ej 2.b
+    loadFromFile("data/conferences.txt",   "Conference")
   }
 }

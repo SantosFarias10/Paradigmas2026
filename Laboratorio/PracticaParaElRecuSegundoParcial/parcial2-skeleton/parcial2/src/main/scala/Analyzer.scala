@@ -12,12 +12,26 @@ object Analyzer {
    * @return lista de entidades cuyo texto aparece en el texto analizado
    */
   def detectEntities(text: String, dictionary: List[NamedEntity]): List[NamedEntity] = {
+    // Ej 1.d
     /*
     val lowerText = text.toLowerCase
     dictionary.filter(entity => lowerText.contains(entity.text.toLowerCase))
     */
     // Usamos mathces
     dictionary.filter(entity => entity.matches(text))
+  }
+
+  // Ej 2.c
+  /**
+   * Detecta las entidades del diccionario que aparecen en el texto dado
+   * y cuyo isRelevant es true.
+   *
+   * @param text       texto a analizar
+   * @param dictionary lista de entidades conocidas
+   * @return lista de entidades relevantes cuyo texto aparece en el texto analizado
+   */
+  def detectRelevant(text: String, dictionary: List[NamedEntity]): List[NamedEntity] = {
+    dictionary.filter(entity => entity.isRelevant && entity.matches(text))
   }
 
   /**
