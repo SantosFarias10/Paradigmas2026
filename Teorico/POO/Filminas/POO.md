@@ -84,9 +84,29 @@ Un programa OO envía mensajes a los objetos
 En programación convencional, el significado de una operación con los mismos operandos es siempre el mismo.
 En POO el código depende del objeto y el mensaje
 ## Sobrecarga vs. lookup dinámico
-En programación convencional `add (x, y)` la función `add` tiene significado fijo.
-Para sumar dos números `x -> add (y)` tenemos un `add` distinto si `x` es entero, complejo, etc.
-Semejante a la sobrecarga, con una diferencia crítica: La sobrecarga se resuelve en tiempo de compilación, mientras que el lookup dinámico se resuelve en tiempo de ejecución.
+### Lookup Dinámico
+El **lookup dinámico** (o búsqueda dinámica) es el mecanismo fundamental de la programación orientada a objetos donde, cuando se le envía un mensaje a un objeto, el código (método) exacto que se va a ejecutar se determina en **tiempo de ejecución** basándose en la implementación real (la clase) de ese objeto, y no en el tipo estático de la variable que lo apunta.
+
+En la práctica, esto significa que el objeto mismo "elige" cómo responder al mensaje. Si en un programa tenemos una instrucción `x -> add(y)`, y `x` es un número entero, el método invocado realizará una suma matemática; pero si `x` resulta ser un conjunto (_set_), el método agregará el elemento al conjunto. Ambos métodos se llaman igual, pero el comportamiento varía dinámicamente según la naturaleza de `x` al momento de pasar por esa línea de código.
+- **En Smalltalk:** Este mecanismo es el comportamiento por defecto para todo. Se implementa buscando el método en el diccionario de métodos de la clase del objeto y sus superclases.
+- **En C++ y Java:** Se aplica mediante **funciones virtuales** (`virtual` en C++) usando una tabla de indirección llamada _vtable_ para resolver la dirección de la función en tiempo de ejecución.
+### Sobrecarga
+La **sobrecarga** ocurre cuando un mismo identificador o nombre de función tiene asociadas dos o más implementaciones distintas, las cuales se diferencian estrictamente por la cantidad y los **tipos estáticos de sus parámetros**.
+
+A diferencia del lookup dinámico, la sobrecarga se resuelve enteramente en **tiempo de compilación**. El compilador analiza los tipos de los argumentos pasados en la invocación y decide de antemano qué bloque de código debe enlazarse. Un ejemplo clásico es el operador de suma `+`:
+
+- Si escribimos `3 + 2`, el compilador detecta que ambos operandos son enteros y enlaza la instrucción a nivel de hardware para suma de enteros binarios.
+- Si escribimos `3.0 + 2.0`, el compilador enlaza la instrucción matemática para suma de punto flotante. Ambas operaciones se llaman `+`, pero usan algoritmos completamente distintos determinados antes de que el programa corra.
+
+>[!warning] Trampa clásica de Parcial (Interacción en C++)
+> En C++, una función no-virtual puede reescribirse sintácticamente en una clase derivada con el mismo nombre pero distintos parámetros. ¡Esto es **sobrecarga**, no lookup dinámico!. Como no es `virtual`, el compilador usará el tipo estático del puntero (por ejemplo, `Base* p`) para decidir qué función llamar en tiempo de compilación, ignorando el tipo real del objeto en memoria.
+
+### Diferencias Fundamentales para la Resolución de Ejercicios
+Para identificar de qué mecanismo se trata al analizar un código en el parcial, fijate en estos tres ejes:
+
+1. **Momento de Resolución:** La diferencia más crı́tica es que la sobrecarga la resuelve el compilador (tiempo de compilación) usando reglas estáticas, mientras que el lookup dinámico lo resuelve el entorno (tiempo de ejecución) evaluando el objeto real.
+2. **Criterio de Selección:** La sobrecarga utiliza la _firma completa de la función_ (los tipos de todos los argumentos que le pasaste) para decidir qué algoritmo usar. El lookup dinámico tradicional (como en Java, C++ o Smalltalk) se basa **únicamente en el objeto receptor** (el objeto a la izquierda del punto, ej. `objeto.metodo(args)`), ignorando el tipo dinámico de los argumentos.
+3. **Naturaleza del Algoritmo:** En el lookup dinámico, un mismo algoritmo lógico puede aplicarse polimórficamente a varios subtipos. En la sobrecarga, estás atando un mismo nombre a algoritmos que por debajo no tienen nada que ver el uno con el otro (como sumar ints vs concatenar strings)
 # Encapsulación
 El programador de un concepto tiene una vista detallada. 
 El usuario de un concepto tiene una vista abstracta.

@@ -1,0 +1,7 @@
+[0m[[0m[33mwarn[0m] [0m[0m/home/mona/Documentos/Paradigmas2026/Laboratorio/PracticaParaElRecuSegundoParcial/lab2-skeleton/src/main/scala/Main.scala:42:9: enclosing method main has result type Unit: return value of type List[NamedEntity] discarded[0m
+[0m[[0m[33mwarn[0m] [0m[0m        return entities[0m
+[0m[[0m[33mwarn[0m] [0m[0m        ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/home/mona/Documentos/Paradigmas2026/Laboratorio/PracticaParaElRecuSegundoParcial/lab2-skeleton/src/main/scala/Main.scala:42:16: a pure expression does nothing in statement position[0m
+[0m[[0m[33mwarn[0m] [0m[0m        return entities[0m
+[0m[[0m[33mwarn[0m] [0m[0m               ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mtwo warnings found[0m

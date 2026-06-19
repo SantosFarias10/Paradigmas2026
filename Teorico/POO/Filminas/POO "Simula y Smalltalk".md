@@ -16,7 +16,7 @@ Un objeto de una clase "prefijada" es la concatenación de cada clase del prefij
 El tipo de un objeto es su clase.
 El tipo de una subclase se trata como un subtipo del tipo asociado con la superclase.
 ### Ejemplo
-```
+```Smalltalk
 Class A(...); ...
 
 A Class B(...); ...
