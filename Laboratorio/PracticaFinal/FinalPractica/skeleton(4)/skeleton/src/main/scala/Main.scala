@@ -15,7 +15,8 @@ object Main {
       println(s"\n${"=" * 60}\n$url\n${"=" * 60}")
       titles.flatMap { title =>
         val entities = Analyzer.detectEntities(title, dictionary)
-        println(Formatters.formatNERResult(title, entities))
+        val entitiesAbove = Analyzer.detectAboveThreshold(title, dictionary, 5)
+        println(Formatters.formatScoredResult(title, entitiesAbove))
         entities
       }
     }

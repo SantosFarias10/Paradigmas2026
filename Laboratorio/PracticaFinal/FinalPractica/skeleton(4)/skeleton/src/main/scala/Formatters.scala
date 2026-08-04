@@ -14,7 +14,15 @@ object Formatters {
     val header = s"""Post: "$postTitle"\nEntidades detectadas:"""
     val body =
       if (entities.isEmpty) "  (sin entidades detectadas)"
-      else entities.map(e => s"  ${e.describe}").mkString("\n")
+      else entities.map { e =>
+        val lowerTitle = postTitle.toLowerCase
+        if (lowerTitle.contains(e.text.toLowerCase)) {
+          s"  ${e.describe}"
+        } else {
+          val alias = e.aliases.find(a => lowerTitle.contains(a.toLowerCase)).getOrElse("")
+          s"  ${e.describe}  (detectado como: $alias)"
+        }
+      }.mkString("\n")
     s"$header\n$body"
   }
 
@@ -29,5 +37,17 @@ object Formatters {
       .sortBy(-_._2)
       .map { case (entityType, count) => s"$entityType: $count" }
     ("=== Estadísticas de entidades ===" :: lines).mkString("\n")
+  }
+
+  def formatScoredResult(postTitle: String, entities: List[NamedEntity]): String = {
+    val header = s"""Post: "$postTitle"\nEntidades detectadas (por relevancia):"""
+    val body =
+      if (entities.isEmpty) "  (sin entidades detectadas)"
+      else entities
+        // Truco al pone (-) invertimos el orden, por lo que nos los va a ordenar de mayor a menor
+        .sortBy(-_.relevanceScore)
+        .map(e => s"  [${e.relevanceScore}] ${e.describe}")
+        .mkString("\n")
+    s"$header\n$body"
   }
 }

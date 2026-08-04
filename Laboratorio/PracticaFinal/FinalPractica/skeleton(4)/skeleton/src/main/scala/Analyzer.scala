@@ -13,7 +13,14 @@ object Analyzer {
    */
   def detectEntities(text: String, dictionary: List[NamedEntity]): List[NamedEntity] = {
     val lowerText = text.toLowerCase
-    dictionary.filter(entity => lowerText.contains(entity.text.toLowerCase))
+
+    dictionary.filter(entity =>
+      // allNames devuelve una lista con el nombre base y los aliases
+      // exists(...) recorre esa lista y devuelve true si al menos uno cumple la condición
+      entity.allNames.exists(name =>
+        lowerText.contains(name.toLowerCase)
+      )
+    )
   }
 
   /**
@@ -24,5 +31,14 @@ object Analyzer {
    */
   def countByType(entities: List[NamedEntity]): Map[String, Int] = {
     entities.groupBy(_.entityType).view.mapValues(_.size).toMap
+  }
+
+  //
+  def detectAboveThreshold(text: String, dictionary:List[NamedEntity], threshold: Int): List[NamedEntity] = {
+    val listFiltered: List[NamedEntity]= detectEntities(text, dictionary).filter(entity =>
+      entity.relevanceScore >= threshold
+    )
+
+    return listFiltered
   }
 }
