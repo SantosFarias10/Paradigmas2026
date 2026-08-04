@@ -12,9 +12,12 @@ object Main {
       val titles = FileIO.extractPostTitles(json)
       println(s"\n${"=" * 60}\n$url\n${"=" * 60}")
       titles.flatMap { title =>
-        val entities = Analyzer.detectEntities(title, dictionary)
-        println(Formatters.formatNERResult(title, entities))
-        entities
+        // entidades relevantes para mostrar (filtradas por isRelevant)
+        val relevantEntities = Analyzer.detectRelevant(title, dictionary)
+        println(Formatters.formatGroupedNERResult(title, relevantEntities))
+
+        // todas las entidades para las estadísticas globales
+        Analyzer.detectEntities(title, dictionary)
       }
     }
 
